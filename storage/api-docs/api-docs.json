@@ -46,7 +46,128 @@
                         "description": "Successful operation",
                         "content": {
                             "application/json": {
-                                "schema": {}
+                                "schema": {
+                                    "properties": {
+                                        "isSuccess": {
+                                            "description": "Status of the request",
+                                            "type": "boolean",
+                                            "example": "true"
+                                        },
+                                        "message": {
+                                            "description": "Message of the request",
+                                            "type": "string",
+                                            "example": "Books retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Book"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Store new book",
+                "description": "Store new book",
+                "operationId": "storeBook",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "author",
+                                    "genre",
+                                    "price",
+                                    "quantity"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Book Title"
+                                    },
+                                    "author": {
+                                        "type": "string",
+                                        "example": "Author Name"
+                                    },
+                                    "genre": {
+                                        "type": "string",
+                                        "example": "Genre"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": "100.00"
+                                    },
+                                    "quantity": {
+                                        "type": "integer",
+                                        "example": "10"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Book created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "isSuccess": {
+                                            "description": "Status of the request",
+                                            "type": "boolean",
+                                            "example": "true"
+                                        },
+                                        "message": {
+                                            "description": "Message of the request",
+                                            "type": "string",
+                                            "example": "Book created successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Book"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "isSuccess": {
+                                            "description": "Status of the request",
+                                            "type": "boolean",
+                                            "example": "false"
+                                        },
+                                        "message": {
+                                            "description": "Message of the request",
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": "null"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
                             }
                         }
                     },
@@ -54,7 +175,25 @@
                         "description": "Internal server error",
                         "content": {
                             "application/json": {
-                                "schema": {}
+                                "schema": {
+                                    "properties": {
+                                        "isSuccess": {
+                                            "description": "Status of the request",
+                                            "type": "boolean",
+                                            "example": "false"
+                                        },
+                                        "message": {
+                                            "description": "Message of the request",
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": "null"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
                             }
                         }
                     }
@@ -222,6 +361,87 @@
         }
     },
     "components": {
+        "schemas": {
+            "Book": {
+                "title": "Book",
+                "description": "Book model",
+                "properties": {
+                    "id": {
+                        "description": "ID of the book",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": "1"
+                    },
+                    "title": {
+                        "description": "Title of the book",
+                        "type": "string",
+                        "example": "Book Title"
+                    },
+                    "author": {
+                        "description": "Author of the book",
+                        "type": "string",
+                        "example": "Author Name"
+                    },
+                    "genre": {
+                        "description": "Genre of the book",
+                        "type": "string",
+                        "example": "Genre"
+                    },
+                    "price": {
+                        "description": "Price of the book",
+                        "type": "number",
+                        "format": "float",
+                        "example": "100.00"
+                    },
+                    "quantity": {
+                        "description": "Quantity of the book",
+                        "type": "integer",
+                        "example": "10"
+                    },
+                    "created_at": {
+                        "description": "Created at",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2021-08-01T00:00:00Z"
+                    },
+                    "updated_at": {
+                        "description": "Updated at",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2021-08-01T00:00:00Z"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "responses": {
+            "500": {
+                "description": "Internal server error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "isSuccess": {
+                                    "description": "Status of the request",
+                                    "type": "boolean",
+                                    "example": "false"
+                                },
+                                "message": {
+                                    "description": "Message of the request",
+                                    "type": "string",
+                                    "example": "Internal server error"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "example": "null"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
         "securitySchemes": {
             "sanctum": {
                 "type": "apiKey",

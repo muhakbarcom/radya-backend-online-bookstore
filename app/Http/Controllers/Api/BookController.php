@@ -6,7 +6,6 @@ use App\Models\Book;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
-use OpenApi\Annotations as OA;
 
 class BookController extends Controller
 {
@@ -39,12 +38,21 @@ class BookController extends Controller
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent()
+     *          @OA\JsonContent(
+     *             @OA\Property(property="isSuccess", type="boolean", example="true", description="Status of the request"),
+     *             @OA\Property(property="message", type="string", example="Books retrieved successfully", description="Message of the request"),
+     *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Book"))
+     *          )
+     * )
      *       ),
      *      @OA\Response(
      *          response=500,
      *          description="Internal server error",
-     *          @OA\JsonContent()
+     *          @OA\JsonContent(
+     *            @OA\Property(property="isSuccess", type="boolean", example="false", description="Status of the request"),
+     *            @OA\Property(property="message", type="string", example="Internal server error", description="Message of the request"),
+     *            @OA\Property(property="data", type="object", example="null"
+     * )
      *       )
      *     )
      */
@@ -80,6 +88,53 @@ class BookController extends Controller
     }
 
 
+    /**
+     * @OA\Post(
+     *     path="/api/books",
+     *     operationId="storeBook",
+     *     tags={"Books"},
+     *     summary="Store new book",
+     *     description="Store new book",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *            required={"title","author","genre","price","quantity"},
+     *            @OA\Property(property="title", type="string", example="Book Title"),
+     *            @OA\Property(property="author", type="string", example="Author Name"),
+     *            @OA\Property(property="genre", type="string", example="Genre"),
+     *            @OA\Property(property="price", type="number", format="float", example="100.00"),
+     *            @OA\Property(property="quantity", type="integer", example="10")
+     * )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Book created successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="isSuccess", type="boolean", example="true", description="Status of the request"),
+     *             @OA\Property(property="message", type="string", example="Book created successfully", description="Message of the request"),
+     *             @OA\Property(property="data", type="object", ref="#/components/schemas/Book")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *           @OA\Property(property="isSuccess", type="boolean", example="false", description="Status of the request"),
+     *           @OA\Property(property="message", type="string", example="The given data was invalid.", description="Message of the request"),
+     *           @OA\Property(property="data", type="object", example="null")
+     * )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error",
+     *         @OA\JsonContent(
+     *           @OA\Property(property="isSuccess", type="boolean", example="false", description="Status of the request"),
+     *           @OA\Property(property="message", type="string", example="Internal server error", description="Message of the request"),
+     *           @OA\Property(property="data", type="object", example="null")
+     * )
+     *     )
+     * )
+     */
     public function store(Request $request)
     {
         $request->validate([
