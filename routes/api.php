@@ -25,7 +25,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Rute untuk admin
     Route::middleware('role:admin')->group(function () {
-        Route::apiResource('books', BookController::class)->except(['create', 'edit']);
+        Route::prefix('books')->group(function () {
+            Route::post('/', [BookController::class, 'store'])->name('books.store');
+            Route::get('/{id}', [BookController::class, 'show'])->name('books.show');
+            Route::put('/{id}', [BookController::class, 'update'])->name('books.update');
+            Route::delete('/{id}', [BookController::class, 'destroy'])->name('books.destroy');
+        });
+
         Route::apiResource('users', UserController::class)->except(['create', 'edit']);
 
         Route::prefix('inventory')->group(function () {

@@ -219,7 +219,7 @@ class BookController extends Controller
      *     )
      * )
      */
-    public function update(Request $request, Book $book)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'title' => 'required|string',
@@ -230,8 +230,7 @@ class BookController extends Controller
         ]);
 
         try {
-
-
+            $book = Book::findOrFail($id);
             $book->update($request->all());
 
             return response()->json([

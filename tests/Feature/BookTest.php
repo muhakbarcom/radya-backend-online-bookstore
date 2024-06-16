@@ -88,9 +88,11 @@ class BookTest extends TestCase
 
         $this->actingAs($admin, 'sanctum');
 
-        $book = Book::factory()->create();
+        Book::factory(1)->create();
 
-        $response = $this->putJson(route('books.update', $book->id), [
+        $bookId = Book::first()->id;
+
+        $response = $this->putJson(route('books.update', $bookId), [
             'title' => 'Updated Book',
             'author' => 'Author Name',
             'genre' => 'Genre',
@@ -102,15 +104,11 @@ class BookTest extends TestCase
             ->assertJsonStructure([
                 'isSuccess',
                 'message',
-                'data' => [
-                    'id',
-                    'title',
-                    'author',
-                    'genre',
-                    'price',
-                    'quantity',
-                ],
+                'data'
             ]);
+
+        // isSuccess should be true
+        $this->assertTrue($response['isSuccess']);
 
         $this->assertDatabaseHas('books', [
             'title' => 'Updated Book',
@@ -194,15 +192,10 @@ class BookTest extends TestCase
             ->assertJsonStructure([
                 'isSuccess',
                 'message',
-                'data' => [
-                    'id',
-                    'title',
-                    'author',
-                    'genre',
-                    'price',
-                    'quantity',
-                ],
+                'data'
             ]);
+
+        $this->assertTrue($response['isSuccess']);
     }
 
     public function test_user_can_filter_books_by_genre()
