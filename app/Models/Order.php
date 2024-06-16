@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  *         property="status",
  *         type="string",
  *         description="Status of the order",
- *         example="pending"
+ *         example="completed"
  *     ),
  *     @OA\Property(
  *         property="total_price",

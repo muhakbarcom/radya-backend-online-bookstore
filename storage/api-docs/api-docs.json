@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "L5 OpenApi",
-        "description": "L5 Swagger OpenApi description",
+        "title": "Online Bookstore - Radya Labs API Documentation",
+        "description": "This is the official API documentation for Online Bookstore - Radya Labs",
         "contact": {
             "email": "muhammad.akbar5999@gmail.com"
         },
@@ -201,6 +201,95 @@
             }
         },
         "/api/books/{id}": {
+            "get": {
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Get book information",
+                "description": "Get book information",
+                "operationId": "getBookById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "isSuccess": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Book retrieved successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Book"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Book not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "isSuccess": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Book not found"
+                                        },
+                                        "data": {
+                                            "example": null
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "isSuccess": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        },
+                                        "data": {
+                                            "example": null
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "put": {
                 "tags": [
                     "Books"
@@ -740,6 +829,65 @@
             }
         },
         "/api/orders": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "View all orders",
+                "description": "View all orders, if user is admin, it will return all orders, if user is customer, it will return only orders that belong to the user",
+                "operationId": "viewOrders",
+                "responses": {
+                    "200": {
+                        "description": "Data retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "isSuccess": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Order"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "isSuccess": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        },
+                                        "data": {
+                                            "example": null
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Orders"
@@ -1878,7 +2026,7 @@
                     "status": {
                         "description": "Status of the order",
                         "type": "string",
-                        "example": "pending"
+                        "example": "completed"
                     },
                     "total_price": {
                         "description": "Total price of the order",
@@ -2079,6 +2227,32 @@
             }
         }
     },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Login, register, and logout"
+        },
+        {
+            "name": "Books",
+            "description": "Master data books"
+        },
+        {
+            "name": "User",
+            "description": "Master data users"
+        },
+        {
+            "name": "Inventory",
+            "description": "Manage book stock"
+        },
+        {
+            "name": "Shopping Cart",
+            "description": "Manage shopping cart"
+        },
+        {
+            "name": "Orders",
+            "description": "Manage orders"
+        }
+    ],
     "security": [
         {
             "sanctum": []

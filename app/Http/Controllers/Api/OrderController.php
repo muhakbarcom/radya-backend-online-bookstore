@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Models\User;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\ShoppingCart;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class OrderController extends Controller
 {
@@ -96,6 +97,55 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
+            return response()->json([
+                'isSuccess' => false,
+                'message' => $e->getMessage(),
+                'data' => null
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *      path="/api/orders",
+     *      operationId="viewOrders",
+     *      tags={"Orders"},
+     *      summary="View all orders",
+     *      description="View all orders, if user is admin, it will return all orders, if user is customer, it will return only orders that belong to the user",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Data retrieved successfully",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="isSuccess", type="boolean", example=true),
+     *              @OA\Property(property="message", type="string", example="Data retrieved successfully"),
+     *              @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Order"))
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=500,
+     *          description="Internal server error",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="isSuccess", type="boolean", example=false),
+     *              @OA\Property(property="message", type="string", example="Internal server error"),
+     *              @OA\Property(property="data", example=null)
+     *          )
+     *      )
+     * )
+     */
+    public function viewOrders(Request $request)
+    {
+        try {
+            $user = User::find(auth()->user()->id);
+
+            if ($user->hasRole('admin')) $orders = Order::all();
+            else $orders = Order::where('user_id', $user->id)->get();
+
+            return response()->json([
+                'isSuccess' => true,
+                'message' => 'Data retrieved successfully',
+                'data' => $orders
+            ], 200);
+        } catch (\Exception $e) {
             return response()->json([
                 'isSuccess' => false,
                 'message' => $e->getMessage(),

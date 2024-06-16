@@ -15,15 +15,18 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 // Rute dengan middleware 'auth:sanctum'
 Route::middleware('auth:sanctum')->group(function () {
+
     // Rute untuk semua role
-    Route::middleware('role:customer')->group(function () {
-        Route::get('/api/books', [BookController::class, 'index'])->name('books.index');
+    Route::middleware('role:admin|customer')->group(function () {
+        Route::get('/books', [BookController::class, 'index'])->name('books.index');
         Route::put('/user/profile', [UserController::class, 'updateProfile'])->name('user.profile');
+        Route::get('/orders', [OrderController::class, 'viewOrders'])->name('orders.view');
     });
 
     // Rute untuk admin
     Route::middleware('role:admin')->group(function () {
-        Route::apiResource('books', BookController::class)->except(['create', 'edit', 'index']);
+        Route::apiResource('books', BookController::class)->except(['create', 'edit']);
+        Route::apiResource('users', UserController::class)->except(['create', 'edit']);
 
         Route::prefix('inventory')->group(function () {
             Route::get('/', [InventoryController::class, 'index'])->name('inventory.index');
@@ -31,8 +34,6 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/{id}/reduce-stock', [InventoryController::class, 'reduceStock'])->name('inventory.reduce-stock');
             Route::delete('/{id}', [InventoryController::class, 'deleteBook'])->name('inventory.delete');
         });
-
-        Route::apiResource('users', UserController::class)->except(['create', 'edit']);
     });
 
     // Rute untuk customer

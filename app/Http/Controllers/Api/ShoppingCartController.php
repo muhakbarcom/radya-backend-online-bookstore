@@ -64,6 +64,15 @@ class ShoppingCartController extends Controller
 
         $cartItem = ShoppingCart::where('user_id', $user->id)->where('book_id', $request->book_id)->first();
 
+        // Check if quantity is available
+        if ($request->quantity + ($cartItem ? $cartItem->quantity : 0) > $book->quantity) {
+            return response()->json([
+                'isSuccess' => false,
+                'message' => 'Book stock is not enough',
+                'data' => $book
+            ], 422);
+        }
+
         if ($cartItem) {
             $cartItem->quantity += $request->quantity;
             $cartItem->save();
@@ -139,6 +148,16 @@ class ShoppingCartController extends Controller
 
         try {
             $cartItem = ShoppingCart::findOrFail($id);
+
+            // Check if quantity is available
+            if ($request->quantity + $cartItem->quantity > $cartItem->book->quantity) {
+                return response()->json([
+                    'isSuccess' => false,
+                    'message' => 'Book stock is not enough',
+                    'data' => $cartItem->book
+                ], 422);
+            }
+
             $cartItem->quantity = $request->quantity;
             $cartItem->save();
 
@@ -194,6 +213,7 @@ class ShoppingCartController extends Controller
     {
         try {
             $cartItem = ShoppingCart::findOrFail($id);
+
             $cartItem->delete();
 
             return response()->json([
