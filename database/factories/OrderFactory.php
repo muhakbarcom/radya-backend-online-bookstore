@@ -14,7 +14,7 @@ class OrderFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'status' => fake()->randomElement(['pending', 'processing', 'completed', 'shipped', 'cancelled']),
+            'status' => fake()->randomElement(['completed']),
             'total_price' => fake()->randomFloat(2, 20, 500),
             'order_number' => strtoupper(fake()->unique()->bothify('ORDER-#######')),
         ];
