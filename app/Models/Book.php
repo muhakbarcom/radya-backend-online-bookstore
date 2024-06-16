@@ -82,4 +82,9 @@ class Book extends Model
         'price',
         'quantity',
     ];
+
+    public function shoppingCarts()
+    {
+        return $this->hasMany(ShoppingCart::class);
+    }
 }

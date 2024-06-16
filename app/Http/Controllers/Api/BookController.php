@@ -168,7 +168,58 @@ class BookController extends Controller
         }
     }
 
-
+    /**
+     * @OA\Put(
+     *     path="/api/books/{id}",
+     *     operationId="updateBook",
+     *     tags={"Books"},
+     *     summary="Update a book",
+     *     description="Update a book",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="title", type="string", example="Book Title"),
+     *             @OA\Property(property="author", type="string", example="Author Name"),
+     *             @OA\Property(property="genre", type="string", example="Genre"),
+     *             @OA\Property(property="price", type="number", format="float", example="100.00"),
+     *             @OA\Property(property="quantity", type="integer", example=10)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="isSuccess", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Book updated successfully"),
+     *             @OA\Property(property="data", ref="#/components/schemas/Book")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="isSuccess", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Validation error"),
+     *             @OA\Property(property="data", example=null)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="isSuccess", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Internal server error"),
+     *             @OA\Property(property="data", example=null)
+     *         )
+     *     )
+     * )
+     */
     public function update(Request $request, Book $book)
     {
         $request->validate([
@@ -205,6 +256,39 @@ class BookController extends Controller
     }
 
 
+    /**
+     * @OA\Delete(
+     *     path="/api/books/{id}",
+     *     operationId="deleteBook",
+     *     tags={"Books"},
+     *     summary="Delete a book",
+     *     description="Delete a book",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="isSuccess", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Book deleted successfully"),
+     *             @OA\Property(property="data", example=null)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="isSuccess", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Internal server error"),
+     *             @OA\Property(property="data", example=null)
+     *         )
+     *     )
+     * )
+     */
     public function destroy(Book $book)
     {
         try {
