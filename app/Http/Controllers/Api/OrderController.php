@@ -92,7 +92,7 @@ class OrderController extends Controller
                 'isSuccess' => true,
                 'message' => 'Order placed successfully',
                 'data' => $order
-            ], 201);
+            ], 200);
         } catch (\Exception $e) {
             DB::rollBack();
 

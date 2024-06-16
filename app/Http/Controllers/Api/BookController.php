@@ -87,7 +87,6 @@ class BookController extends Controller
         }
     }
 
-
     /**
      * @OA\Post(
      *     path="/api/books",
@@ -298,6 +297,65 @@ class BookController extends Controller
                 'isSuccess' => true,
                 'message' => 'Book deleted successfully',
                 'data' => null
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'isSuccess' => false,
+                'message' => $e->getMessage(),
+                'data' => null
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/books/{id}",
+     *     operationId="getBookById",
+     *     tags={"Books"},
+     *     summary="Get book information",
+     *     description="Get book information",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="isSuccess", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Book retrieved successfully"),
+     *             @OA\Property(property="data", ref="#/components/schemas/Book")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Book not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="isSuccess", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Book not found"),
+     *             @OA\Property(property="data", example=null)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="isSuccess", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Internal server error"),
+     *             @OA\Property(property="data", example=null)
+     *         )
+     *     )
+     * )
+     */
+    public function show(Book $book)
+    {
+        try {
+            return response()->json([
+                'isSuccess' => true,
+                'message' => 'Book retrieved successfully',
+                'data' => $book
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
