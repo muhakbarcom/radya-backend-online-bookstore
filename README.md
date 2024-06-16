@@ -23,19 +23,23 @@
     ```bash
     cp .env.example .env
     ```
-4. Install Composer dependencies:
+4. Create SQlite Database
+    ```bash
+    touch database/database.sqlite
+    ```
+5. Install Composer dependencies:
     ```bash
     composer install
     ```
-5. Run migrations and seeders:
+6. Run migrations and seeders:
     ```bash
     php artisan migrate:refresh --seed
     ```
-6. Run the application:
+7. Run the application:
     ```bash
     php artisan serve
     ```
-7. Open the Swagger documentation at [http://127.0.0.1:8000](http://127.0.0.1:8000) (Default) or Logging Dashboard at [http://127.0.0.1:8000/telescope](http://127.0.0.1:8000/telescope)
+8. Open the Swagger documentation at [http://127.0.0.1:8000](http://127.0.0.1:8000) (Default) or Logging Dashboard at [http://127.0.0.1:8000/telescope](http://127.0.0.1:8000/telescope)
 
 ## Demo Accounts
 
