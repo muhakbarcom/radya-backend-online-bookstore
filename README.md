@@ -35,7 +35,7 @@
     ```bash
     php artisan serve
     ```
-7. Open the Swagger documentation at [http://localhost:3000](http://localhost:3000) (Default) or Logging Dashboard at [http://localhost:3000/telescope](http://localhost:3000/telescope)
+7. Open the Swagger documentation at [http://127.0.0.1:8000](http://127.0.0.1:8000) (Default) or Logging Dashboard at [http://127.0.0.1:8000/telescope](http://127.0.0.1:8000/telescope)
 
 ## Demo Accounts
 
