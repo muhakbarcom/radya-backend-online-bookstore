@@ -35,11 +35,15 @@
     ```bash
     php artisan migrate:refresh --seed
     ```
-7. Run the application:
+7. Generate New Key
+    ```bash
+    php artisan key:generate
+    ```
+8. Run the application:
     ```bash
     php artisan serve
     ```
-8. Open the Swagger documentation at [http://127.0.0.1:8000](http://127.0.0.1:8000) (Default) or Logging Dashboard at [http://127.0.0.1:8000/telescope](http://127.0.0.1:8000/telescope)
+9. Open the Swagger documentation at [http://127.0.0.1:8000](http://127.0.0.1:8000) (Default) or Logging Dashboard at [http://127.0.0.1:8000/telescope](http://127.0.0.1:8000/telescope)
 
 ## Demo Accounts
 
